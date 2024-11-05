@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.8.8")
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("org.osmdroid:osmdroid-android:6.1.13")
     implementation("androidx.core:core-ktx:1.13.1")
