@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 // Permiso concedido
                 initializeUserLocation()
             } else {
-                // Permiso denegado
+                // Permiso denegado, manejar error
             }
         }
     }
