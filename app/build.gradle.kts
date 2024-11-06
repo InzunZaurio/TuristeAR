@@ -50,6 +50,9 @@ android {
 }
 
 dependencies {
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0") // Para generar código de Glide
+    implementation ("jp.wasabeef:glide-transformations:4.3.0") // Para efectos de transformación como desenfoque
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("com.google.code.gson:gson:2.8.8")
     implementation("com.google.android.gms:play-services-location:21.3.0")

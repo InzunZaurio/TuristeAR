@@ -2,24 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    >
 
     <ImageView
+        android:id="@+id/backgroundGif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/logoTuristear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/logoTuristear"
-        android:layout_centerInParent="true"
-        android:src="@drawable/logoturistear"
-        />
+        android:layout_alignParentTop="true"
+        android:src="@drawable/logoturistear" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/startButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="240dp"
         android:text="Es hora de comenzar"
         android:layout_below="@+id/logoTuristear"
         />
-    
+
+    <TextView
+        android:id="@+id/textoRandom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/startButton"
+        android:layout_marginTop="30dp"
+        android:textColor="#FFFFFF"
+        android:text="Alpha Release - 2024" />
+
 </RelativeLayout>

@@ -20,8 +20,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:title="Tu App"
-        app:titleTextColor="#000000" />
+        app:title="TuristeAR - Versión Alfa"
+        app:titleTextColor="#FFFFFF" />
 
         <!-- MapView para el mapa -->
     <org.osmdroid.views.MapView
