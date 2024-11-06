@@ -15,6 +15,8 @@
         "nombre": "ESCOM",
         "latitud": 19.504829,
         "longitud": -99.146806,
+        "horarios": "7:00 - 20:00",
+        "accesibilidad": "Total",
         "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
     },
     {
@@ -73,8 +75,14 @@
     },
     {
         "nombre": "Palacio de Bellas Artes",
-        "latitud": 19.435200,
-        "longitud": -99.142390,
+        "latitud": 19.434263,
+        "longitud": -99.141893,
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+    },
+    {
+        "nombre": "Punto Prueba Casa",
+        "latitud": 19.627899,
+        "longitud": -99.016722,
         "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
     }
 ]

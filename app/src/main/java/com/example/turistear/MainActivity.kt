@@ -4,7 +4,13 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.view.Gravity
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,16 +23,72 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import java.io.InputStreamReader
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import okhttp3.*
+import org.json.JSONObject
+import org.osmdroid.views.overlay.Polyline
+import java.io.IOException
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var drawerLayout: DrawerLayout
     private lateinit var mapView: MapView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val REQUEST_LOCATION_PERMISSION = 1
+    private lateinit var nearbyButton: FloatingActionButton
+    private lateinit var pointsOfInterest: List<PointOfInterest>
+    private lateinit var centerMapButton: FloatingActionButton
+    private lateinit var cancelRouteButton: FloatingActionButton
+    private var currentRoute: Polyline? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        pointsOfInterest = loadPointsOfInterest()
+        nearbyButton = findViewById(R.id.btnNearbyPoints)
+        nearbyButton.setOnClickListener{
+            showNearbyPoints()
+        }
+
+        centerMapButton = findViewById(R.id.btnCenterMap)
+        centerMapButton.setOnClickListener {
+            centerMapOnUserLocation()
+        }
+
+        cancelRouteButton = findViewById(R.id.btnCancelRoute)
+        cancelRouteButton.setOnClickListener {
+            removeRouteFromMap()
+        }
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu) // Agregar icono de menú
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Configurar DrawerLayout
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navigationView: NavigationView = findViewById(R.id.navigation_view)
+
+        // Listener para abrir el drawer al hacer clic en el ícono de menú
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_reset_location -> {
+                    resetLocation()
+                }
+                R.id.nav_about_us -> {
+                    showAboutUs()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
 
         // Configuración de OSMDroid
         Configuration.getInstance().load(this, applicationContext.getSharedPreferences("osmdroid", MODE_PRIVATE))
@@ -120,6 +182,12 @@ class MainActivity : AppCompatActivity() {
                     marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     marker.title = point.nombre
                     marker.snippet = point.descripcion // Añadir una breve descripción
+                    //marker.snippet = point.horarios
+                    //marker.snippet = point.accesibilidad
+                    marker.setOnMarkerClickListener { _, _ ->
+                        showMuseumDetails(point)
+                        true
+                    }
                     mapView.overlays.add(marker)
                 }
 
@@ -129,6 +197,205 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showMuseumDetails(museo: PointOfInterest) {
+        // Crear el BottomSheetDialog
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_museo, null)
+        bottomSheetDialog.setContentView(view)
+
+        // Configurar la información del museo en el Bottom Sheet
+        val nombreTextView = view.findViewById<TextView>(R.id.museoNombre)
+        val descripcionTextView = view.findViewById<TextView>(R.id.museoDescripcion)
+        nombreTextView.text = museo.nombre
+        descripcionTextView.text = museo.descripcion
+
+        // Configurar el botón para la ruta
+        val btnRuta = view.findViewById<Button>(R.id.btnRuta)
+        btnRuta.setOnClickListener {
+            // Lógica para mostrar la ruta al museo
+            showRouteToMuseum(museo)
+            bottomSheetDialog.dismiss()
+        }
+
+        // Configurar el botón para activar la RA
+        val btnAR = view.findViewById<Button>(R.id.btnAR)
+        btnAR.setOnClickListener {
+            // Lógica para activar la funcionalidad de RA
+            activateAugmentedReality(museo)
+            bottomSheetDialog.dismiss()
+        }
+
+        // Mostrar el Bottom Sheet
+        bottomSheetDialog.show()
+    }
+
+    private fun showRouteToMuseum(museo: PointOfInterest) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val userLat = location.latitude
+                val userLon = location.longitude
+                val museumLat = museo.latitud
+                val museumLon = museo.longitud
+                getRouteFromOSRM(userLat, userLon, museumLat, museumLon)
+            }
+        }
+    }
+
+    private fun activateAugmentedReality(museo: PointOfInterest) {
+        // Aquí podrías implementar la lógica para activar la RA
+        Toast.makeText(this, "Activando RA para ${museo.nombre}", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showNearbyPoints() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val userLocation = GeoPoint(location.latitude, location.longitude)
+                val nearbyPoints = pointsOfInterest.filter { point ->
+                    val pointLocation = GeoPoint(point.latitud, point.longitud)
+                    userLocation.distanceToAsDouble(pointLocation) <= 1000 // Radio de 1 km
+                }
+
+                // Mostrar mensaje con los puntos cercanos
+                if (nearbyPoints.isNotEmpty()) {
+                    val nearbyNames = nearbyPoints.joinToString(separator = ", ") { it.nombre }
+                    showAlertDialog("Estás cerca de estos puntos: $nearbyNames")
+                } else {
+                    showAlertDialog("No estás cerca de ningún punto de interés.")
+                }
+            }
+        }
+    }
+
+    private fun showAlertDialog(message: String) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Puntos cercanos")
+        builder.setMessage(message)
+        builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+        builder.create().show()
+    }
+
+    private fun centerMapOnUserLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val userLocation = GeoPoint(location.latitude, location.longitude)
+                mapView.controller.animateTo(userLocation) // Centrar y animar hacia la posición
+                mapView.controller.setZoom(15.0) // Opcional: ajustar el zoom
+            }
+        }
+    }
+
+    private fun getRouteFromOSRM(startLat: Double, startLon: Double, destLat: Double, destLon: Double) {
+        val url = "https://router.project-osrm.org/route/v1/driving/$startLon,$startLat;$destLon,$destLat?overview=full&geometries=geojson"
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "Error al obtener la ruta", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val jsonResponse = response.body?.string()
+                    if (jsonResponse != null) {
+                        drawRouteOnMap(jsonResponse)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun drawRouteOnMap(jsonResponse: String) {
+        val geoJson = JSONObject(jsonResponse).getJSONArray("routes")
+            .getJSONObject(0).getJSONObject("geometry").getJSONArray("coordinates")
+
+        val geoPoints = ArrayList<GeoPoint>()
+        for (i in 0 until geoJson.length()) {
+            val point = geoJson.getJSONArray(i)
+            val lon = point.getDouble(0)
+            val lat = point.getDouble(1)
+            geoPoints.add(GeoPoint(lat, lon))
+        }
+
+        runOnUiThread {
+            // Crear y mostrar la ruta en el mapa
+            currentRoute = Polyline().apply { setPoints(geoPoints) }
+            mapView.overlayManager.add(currentRoute)
+            mapView.invalidate()
+
+            // Hacer visible el botón de cancelar ruta
+            cancelRouteButton.visibility = View.VISIBLE
+        }
+    }
+
+    private fun removeRouteFromMap() {
+        currentRoute?.let {
+            mapView.overlayManager.remove(it) // Eliminar la ruta del mapa
+            currentRoute = null
+            mapView.invalidate() // Refrescar el mapa
+        }
+
+        // Ocultar el botón de cancelar ruta
+        cancelRouteButton.visibility = View.GONE
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Abrir el DrawerLayout cuando se hace clic en el icono de menú
+        return when (item.itemId) {
+            android.R.id.home -> {
+                drawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun resetLocation() {
+        Toast.makeText(this, "Ubicación reiniciada", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showAboutUs() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Sobre Nosotros")
+        builder.setMessage("Esta aplicación fue desarrollada para ...")
+        builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+        builder.create().show()
+    }
 
     // Respuesta a la solicitud de permisos
     override fun onRequestPermissionsResult(

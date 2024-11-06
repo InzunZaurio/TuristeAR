@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Título del Museo -->
+    <TextView
+        android:id="@+id/museoNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre del Museo"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <!-- Descripción del Museo -->
+    <TextView
+        android:id="@+id/museoDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descripción del Museo"
+        android:paddingTop="8dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <!-- Descripción del Museo -->
+    <TextView
+        android:id="@+id/horarioMuseo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Horarios del Museo"
+        android:paddingTop="8dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <!-- Descripción del Museo -->
+    <TextView
+        android:id="@+id/accesibilidadMuseo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Datos de accesibilidad del Museo"
+        android:paddingTop="8dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <!-- Botón para la Ruta -->
+    <Button
+        android:id="@+id/btnRuta"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ruta más rápida" />
+
+    <!-- Botón para Realidad Aumentada -->
+    <Button
+        android:id="@+id/btnAR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Activar RA"
+        android:layout_marginTop="8dp" />
+
+    <ImageView
+        android:id="@+id/imagenCrono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

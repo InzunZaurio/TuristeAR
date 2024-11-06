@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_reset_location"
+        android:title="Reiniciar ubicación"
+        android:icon="@drawable/ic_reset_location"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_about_us"
+        android:title="Sobre Nosotros"
+        android:icon="@drawable/ic_about"
+        app:showAsAction="never" />
+</menu>
