@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.turistear"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -50,7 +50,10 @@ android {
 }
 
 dependencies {
-    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation("com.google.ar.sceneform:core:1.15.0")
+    implementation("com.google.ar:core:1.46.0")
+    implementation("com.google.ar.sceneform.ux:sceneform-ux:1.15.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0") // Para generar código de Glide
     implementation ("jp.wasabeef:glide-transformations:4.3.0") // Para efectos de transformación como desenfoque
     implementation("com.squareup.okhttp3:okhttp:4.9.1")

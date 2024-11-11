@@ -1,57 +1,61 @@
 package com.example.turistear
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.turistear.R
+import com.google.android.gms.location.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.*
+import org.json.JSONObject
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.io.InputStreamReader
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import okhttp3.*
-import org.json.JSONObject
 import org.osmdroid.views.overlay.Polyline
 import java.io.IOException
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var mapView: MapView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val REQUEST_LOCATION_PERMISSION = 1
+    private val REQUEST_LOCATION_PERMISSION = 1001
     private lateinit var nearbyButton: FloatingActionButton
     private lateinit var pointsOfInterest: List<PointOfInterest>
     private lateinit var centerMapButton: FloatingActionButton
     private lateinit var cancelRouteButton: FloatingActionButton
     private var currentRoute: Polyline? = null
+    private var userMarker: Marker? = null
+    private lateinit var locationCallback: LocationCallback
+    private var isRequestingLocationUpdates = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Configuración de OSMDroid
+        Configuration.getInstance().load(this, applicationContext.getSharedPreferences("osmdroid", MODE_PRIVATE))
+
         setContentView(R.layout.activity_main)
 
         pointsOfInterest = loadPointsOfInterest()
         nearbyButton = findViewById(R.id.btnNearbyPoints)
-        nearbyButton.setOnClickListener{
+        nearbyButton.setOnClickListener {
             showNearbyPoints()
         }
 
@@ -85,12 +89,9 @@ class MainActivity : AppCompatActivity() {
                     showAboutUs()
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
+            drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
             true
         }
-
-        // Configuración de OSMDroid
-        Configuration.getInstance().load(this, applicationContext.getSharedPreferences("osmdroid", MODE_PRIVATE))
 
         // Inicializar el MapView
         mapView = findViewById(R.id.map)
@@ -112,8 +113,70 @@ class MainActivity : AppCompatActivity() {
                 REQUEST_LOCATION_PERMISSION
             )
         } else {
-            // Si el permiso ya fue concedido, inicializa la ubicación del usuario
-            initializeUserLocation()
+            // Si el permiso ya fue concedido, inicia las actualizaciones de ubicación
+            startLocationUpdates()
+        }
+    }
+
+    // Método para iniciar las actualizaciones de ubicación
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            2000 // Tiempo entre actualizaciones en milisegundos
+        ).build()
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    updateLocationOnMap(location)
+                }
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, mainLooper)
+            isRequestingLocationUpdates = true
+        }
+    }
+
+    // Método para actualizar la ubicación del usuario en el mapa
+    private fun updateLocationOnMap(location: Location) {
+        val userLocation = GeoPoint(location.latitude, location.longitude)
+
+        if (userMarker == null) {
+            // Crear el marcador del usuario si no existe
+            userMarker = Marker(mapView)
+            userMarker?.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            userMarker?.title = "Tú estás aquí"
+            mapView.overlays.add(userMarker)
+
+            // Solo centramos el mapa la primera vez
+            mapView.controller.setCenter(userLocation)
+            mapView.controller.setZoom(15.0)
+            addPointsOfInterestMarkers()
+        }
+
+        // Actualizar la posición del marcador sin centrar el mapa
+        userMarker?.position = userLocation
+
+        // Redibujar el mapa para reflejar el movimiento del marcador
+        mapView.invalidate()
+    }
+
+    // Método para agregar los marcadores de los puntos de interés al mapa
+    private fun addPointsOfInterestMarkers() {
+        for (point in pointsOfInterest) {
+            val pointLocation = GeoPoint(point.latitud, point.longitud)
+            val marker = Marker(mapView)
+            marker.position = pointLocation
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            marker.title = point.nombre
+            marker.snippet = point.descripcion // Añadir una breve descripción
+            marker.setOnMarkerClickListener { _, _ ->
+                showMuseumDetails(point)
+                true
+            }
+            mapView.overlays.add(marker)
         }
     }
 
@@ -143,59 +206,6 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Estás cerca de ${point.nombre}", Toast.LENGTH_SHORT).show()
     }
 
-    // Método para inicializar la ubicación del usuario y verificar puntos cercanos
-    private fun initializeUserLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-
-        // Obtener la última ubicación del usuario
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                val userLocation = GeoPoint(location.latitude, location.longitude)
-
-                // Centrar el mapa en la ubicación del usuario y establecer el nivel de zoom
-                mapView.controller.setZoom(15.0)
-                mapView.controller.setCenter(userLocation)
-
-                // Añadir un marcador en la ubicación del usuario
-                val userMarker = Marker(mapView)
-                userMarker.position = userLocation
-                userMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                userMarker.title = "Tú estás aquí"
-                mapView.overlays.add(userMarker)
-
-                // Cargar puntos de interés y agregarlos como marcadores en el mapa
-                val points = loadPointsOfInterest()
-                for (point in points) {
-                    val pointLocation = GeoPoint(point.latitud, point.longitud)
-                    val marker = Marker(mapView)
-                    marker.position = pointLocation
-                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                    marker.title = point.nombre
-                    marker.snippet = point.descripcion // Añadir una breve descripción
-                    //marker.snippet = point.horarios
-                    //marker.snippet = point.accesibilidad
-                    marker.setOnMarkerClickListener { _, _ ->
-                        showMuseumDetails(point)
-                        true
-                    }
-                    mapView.overlays.add(marker)
-                }
-
-                // Verificar cercanía de puntos
-                checkNearbyPoints(userLocation, points)
-            }
-        }
-    }
-
     private fun showMuseumDetails(museo: PointOfInterest) {
         // Crear el BottomSheetDialog
         val bottomSheetDialog = BottomSheetDialog(this)
@@ -219,9 +229,14 @@ class MainActivity : AppCompatActivity() {
         // Configurar el botón para activar la RA
         val btnAR = view.findViewById<Button>(R.id.btnAR)
         btnAR.setOnClickListener {
-            // Lógica para activar la funcionalidad de RA
-            activateAugmentedReality(museo)
-            bottomSheetDialog.dismiss()
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivity(intent)
+            // En el limbo hasta resolver problemas de cámara
+            // Iniciar la actividad de RA
+            //val intent = Intent(this, ARActivity::class.java)
+            //intent.putExtra("museoNombre", museo.nombre) // Pasar información adicional si es necesario
+            //startActivity(intent)
+            //bottomSheetDialog.dismiss()
         }
 
         // Mostrar el Bottom Sheet
@@ -232,9 +247,6 @@ class MainActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -251,18 +263,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun activateAugmentedReality(museo: PointOfInterest) {
-        // Aquí podrías implementar la lógica para activar la RA
-        Toast.makeText(this, "Activando RA para ${museo.nombre}", Toast.LENGTH_SHORT).show()
-    }
-
     private fun showNearbyPoints() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -288,7 +292,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAlertDialog(message: String) {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("Puntos cercanos")
         builder.setMessage(message)
         builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
@@ -296,23 +300,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun centerMapOnUserLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                val userLocation = GeoPoint(location.latitude, location.longitude)
-                mapView.controller.animateTo(userLocation) // Centrar y animar hacia la posición
-                mapView.controller.setZoom(15.0) // Opcional: ajustar el zoom
-            }
+        if (userMarker != null) {
+            mapView.controller.animateTo(userMarker?.position) // Centrar y animar hacia la posición
+            mapView.controller.setZoom(15.0) // Opcional: ajustar el zoom
+        } else {
+            Toast.makeText(this, "Ubicación del usuario no disponible", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -377,7 +369,7 @@ class MainActivity : AppCompatActivity() {
         // Abrir el DrawerLayout cuando se hace clic en el icono de menú
         return when (item.itemId) {
             android.R.id.home -> {
-                drawerLayout.openDrawer(GravityCompat.START)
+                drawerLayout.openDrawer(androidx.core.view.GravityCompat.START)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -404,21 +396,26 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permiso concedido
-                initializeUserLocation()
+                startLocationUpdates()
             } else {
                 // Permiso denegado; puedes manejar este caso si es necesario
+                Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Métodos del ciclo de vida para MapView
+    // Métodos del ciclo de vida para MapView y actualizaciones de ubicación
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+        if (isRequestingLocationUpdates) {
+            startLocationUpdates()
+        }
     }
 
     override fun onPause() {
         super.onPause()
         mapView.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 }

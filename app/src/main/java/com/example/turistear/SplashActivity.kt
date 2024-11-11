@@ -7,7 +7,6 @@ import android.content.Intent
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.example.turistear.R
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 class SplashActivity : AppCompatActivity() {
