@@ -17,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
         val startButton: Button = findViewById(R.id.startButton)
         val backgroundGif = findViewById<ImageView>(R.id.backgroundGif)
         Glide.with(this)
-            .load(R.drawable.ar) // Reemplaza `tu_gif` con el nombre del archivo GIF en drawable
+            .load(R.drawable.ar)
             .transform(CenterCrop(), BlurTransformation(5, 3)) // Nivel de desenfoque
             .into(backgroundGif)
 

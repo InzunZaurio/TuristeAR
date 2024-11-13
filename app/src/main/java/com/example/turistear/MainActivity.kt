@@ -230,13 +230,8 @@ class MainActivity : AppCompatActivity() {
         val btnAR = view.findViewById<Button>(R.id.btnAR)
         btnAR.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-            // En el limbo hasta resolver problemas de cámara
-            // Iniciar la actividad de RA
-            //val intent = Intent(this, ARActivity::class.java)
-            //intent.putExtra("museoNombre", museo.nombre) // Pasar información adicional si es necesario
-            //startActivity(intent)
-            //bottomSheetDialog.dismiss()
         }
 
         // Mostrar el Bottom Sheet
@@ -418,4 +413,5 @@ class MainActivity : AppCompatActivity() {
         mapView.onPause()
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
+
 }

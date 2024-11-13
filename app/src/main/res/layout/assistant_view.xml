@@ -5,7 +5,7 @@
 
     <ImageView
         android:id="@+id/assistant_image"
-        android:layout_width="1000dp"
-        android:layout_height="1000dp"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
         android:src="@drawable/assistant" />
 </RelativeLayout>
