@@ -83,6 +83,11 @@
         "nombre": "Punto Prueba Casa",
         "latitud": 19.627899,
         "longitud": -99.016722,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "Aquí es... donde todo inició....",
+            "Lo siento, no puedo hablar de este lugar. Es complicado.",
+            "Recomiendo que nos movamos a otro lado."
+        ]
     }
 ]

@@ -230,8 +230,10 @@ class MainActivity : AppCompatActivity() {
         val btnAR = view.findViewById<Button>(R.id.btnAR)
         btnAR.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            intent.putExtra("museoNombre", museo.nombre)
             startActivity(intent)
+            bottomSheetDialog.dismiss()
         }
 
         // Mostrar el Bottom Sheet
