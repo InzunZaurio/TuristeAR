@@ -88,6 +88,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_about_us -> {
                     showAboutUs()
                 }
+                R.id.nav_show_tutorial -> {
+                    showAssistantTutorial()
+                }
             }
             drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
             true
@@ -102,6 +105,11 @@ class MainActivity : AppCompatActivity() {
 
         // Solicitar permisos de ubicación
         requestLocationPermission()
+
+        if (isFirstLaunch()) {
+            showAssistantTutorial()
+            setFirstLaunchComplete()
+        }
     }
 
     // Función para solicitar permisos de ubicación
@@ -142,6 +150,8 @@ class MainActivity : AppCompatActivity() {
     // Método para actualizar la ubicación del usuario en el mapa
     private fun updateLocationOnMap(location: Location) {
         val userLocation = GeoPoint(location.latitude, location.longitude)
+        //userMarker?.position = userLocation
+        //mapView.controller.animateTo(userLocation)
 
         if (userMarker == null) {
             // Crear el marcador del usuario si no existe
@@ -156,11 +166,36 @@ class MainActivity : AppCompatActivity() {
             addPointsOfInterestMarkers()
         }
 
+        currentRoute?.let {
+            val remainingRoute = updateRouteBasedOnUserLocation(userLocation)
+            if (remainingRoute.isNotEmpty()) {
+                currentRoute?.setPoints(remainingRoute)
+            } else {
+                // Si el usuario ha alcanzado el destino, elimina la ruta
+                removeRouteFromMap()
+                Toast.makeText(this, "¡Has llegado a tu destino!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         // Actualizar la posición del marcador sin centrar el mapa
         userMarker?.position = userLocation
 
         // Redibujar el mapa para reflejar el movimiento del marcador
         mapView.invalidate()
+    }
+
+    private fun updateRouteBasedOnUserLocation(userLocation: GeoPoint): List<GeoPoint> {
+        val remainingPoints = currentRoute?.points ?: return emptyList()
+
+        // Verifica los puntos de la ruta y elimina los que ya se han recorrido
+        val newRoute = mutableListOf<GeoPoint>()
+        for (point in remainingPoints) {
+            val distance = userLocation.distanceToAsDouble(point)
+            if (distance > 10) { // Umbral para determinar si el usuario está lo suficientemente cerca del punto
+                newRoute.add(point)
+            }
+        }
+        return newRoute
     }
 
     // Método para agregar los marcadores de los puntos de interés al mapa
@@ -244,6 +279,9 @@ class MainActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -400,6 +438,48 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun isFirstLaunch(): Boolean {
+        val sharedPref = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        return sharedPref.getBoolean("isFirstLaunch", true)
+    }
+
+    private fun setFirstLaunchComplete() {
+        val sharedPref = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putBoolean("isFirstLaunch", false)
+            apply()
+        }
+    }
+
+    private fun showAssistantTutorial() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_assistant, null)
+        bottomSheetDialog.setContentView(view)
+
+        val dialogTextView = view.findViewById<TextView>(R.id.dialogText)
+        val assistantImageView = view.findViewById<ImageView>(R.id.assistantImage)
+
+        val tutorialMessages = listOf(
+            "¡Hola! Bienvenido a TuristeAR.",
+            "Te ayudaré a encontrar los mejores museos de la CDMX.",
+            "Toca la pantalla para continuar..."
+        )
+        var currentMessageIndex = 0
+        dialogTextView.text = tutorialMessages[currentMessageIndex]
+
+        view.setOnClickListener {
+            currentMessageIndex++
+            if (currentMessageIndex < tutorialMessages.size) {
+                dialogTextView.text = tutorialMessages[currentMessageIndex]
+            } else {
+                bottomSheetDialog.dismiss()
+            }
+        }
+
+        bottomSheetDialog.show()
+    }
+
 
     // Métodos del ciclo de vida para MapView y actualizaciones de ubicación
     override fun onResume() {

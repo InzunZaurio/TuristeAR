@@ -141,7 +141,7 @@ class CameraActivity : AppCompatActivity() {
         val museo = pointsOfInterest.find { it.nombre == museumName }
 
         // Obtener los diálogos del museo o usar un valor por defecto
-        dialogs = museo?.dialogos ?: listOf("¡Bienvenido!", "Esto es un museo...", "Gracias por tu visita")
+        dialogs = museo?.dialogos ?: listOf("¡Bienvenido!", "Aún no tengo información de este lugar.", "Pronto la conseguiré, descuida. Disfruta tu visita.")
     }
 
 

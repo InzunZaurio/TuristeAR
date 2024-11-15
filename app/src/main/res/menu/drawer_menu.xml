@@ -8,4 +8,8 @@
         android:id="@+id/nav_about_us"
         android:title="Sobre Nosotros"
         android:icon="@drawable/ic_about" />
+    <item
+        android:id="@+id/nav_show_tutorial"
+        android:icon="@drawable/ic_tutorial"
+        android:title="Mostrar Tutorial" />
 </menu>
