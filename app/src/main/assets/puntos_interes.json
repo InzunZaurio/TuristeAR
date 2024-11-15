@@ -17,7 +17,14 @@
         "longitud": -99.146806,
         "horarios": "7:00 - 20:00",
         "accesibilidad": "Total",
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "¡ADORO ESTE LUGAR!",
+            "Has llegado a ESCOM. ¿Sabías que antes aquí había solamente 2 edificios? ¡Pues ahora tienen 4! Trabajan rápido.",
+            "Estos nuevos edificios albergan las nuevas carreras de IA e ICD. También hay gente de ISC por ahí.",
+            "Este lugar tiene relativamente poca historia, pues es la escuela más jóven a nivel Superior del IPN. Está en sus alumnos crearle buena fama.",
+            "Huele un poco raro, ¿No? Mejor vámonos."
+        ]
     },
     {
         "nombre": "Museo Numismático Nacional",
