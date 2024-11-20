@@ -23,8 +23,11 @@
         android:id="@+id/startButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="240dp"
+        android:textColor="@color/teal_700"
         android:text="Es hora de comenzar"
         android:layout_below="@+id/logoTuristear"
+        style="@style/CustomButtonSplash"
+
         />
 
     <TextView
@@ -35,6 +38,7 @@
         android:layout_below="@+id/startButton"
         android:layout_marginTop="30dp"
         android:textColor="#FFFFFF"
-        android:text="Alpha Release - 2024" />
+        android:text="Alpha Release - 2024"
+        style="@style/CustomTextStyle" />
 
 </RelativeLayout>

@@ -380,7 +380,7 @@ class MainActivity : AppCompatActivity() {
     private fun showAboutUs() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Sobre Nosotros")
-        builder.setMessage("Esta aplicación fue desarrollada para ...")
+        builder.setMessage("TuristeAR fue desarrollado como proyecto de Trabajo Terminal para el Instituto Politécnico Nacional en la Escuela Superior de Cómputo. Todos los derechos son los declarados dentro del reglamento interno del IPN.")
         builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
         builder.create().show()
     }
