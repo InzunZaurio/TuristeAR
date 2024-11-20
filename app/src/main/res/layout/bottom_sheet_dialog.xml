@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Hola, bienvenido"
         android:textSize="18sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/white"/>
 
     <Button
         android:id="@+id/btnNext"

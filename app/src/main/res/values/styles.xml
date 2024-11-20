@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Estilo para los botones -->
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:backgroundTint">@color/purple_500</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/montse_regular</item>
+    </style>
+
+    <style name="CustomButtonSplash" parent="Widget.AppCompat.Button">
+        <item name="android:backgroundTint">@color/purple_500</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/montse_bold</item>
+    </style>
+
+    <!-- Estilo para el BottomSheetDialog -->
+    <style name="CustomBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+    </style>
+
+    <style name="CustomBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_background</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:colorBackground">@color/gray</item>
+    </style>
+
+    <!-- Estilo para los textos -->
+    <style name="CustomTextStyle">
+        <item name="android:fontFamily">@font/montse_regular</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+</resources>

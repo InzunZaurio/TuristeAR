@@ -12,4 +12,9 @@
         android:title="Sobre Nosotros"
         android:icon="@drawable/ic_about"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/mostrar_tutorial"
+        android:title="Mostrar Tutorial"
+        android:icon="@drawable/ic_tutorial"
+        app:showAsAction="never" />
 </menu>

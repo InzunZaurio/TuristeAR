@@ -3,7 +3,14 @@
         "nombre": "Museo de Arte",
         "latitud": 19.4326,
         "longitud": -99.1332,
-        "descripcion": "Museo de arte moderno en la CDMX"
+        "descripcion": "Con una colección muy digna que avala el lugar de México en la historia del arte, las obras se concentran desde mediados del siglo XVI hasta mediados del siglo XX.",
+        "dialogos":[
+            "Este lugar me llena de inspiración, ¿sabes?",
+            "Este edificio iba a ser inicialmente el Palacio de Comunicaciones. Por alguna razón ahora es el MUNAL desde 1982.",
+            "Además, los acabados artísticos de este museo se terminaron en Florencia. Lo que me recuerda a alguien...",
+            "Sí, Porfirio Díaz. Usaba este edificio para recibir a dignatarios extranjeros y para sus declaraciones públicas.",
+            "¡Adoro la historia!"
+        ]
     },
     {
         "nombre": "Monumento a la Revolución",
@@ -30,13 +37,26 @@
         "nombre": "Museo Numismático Nacional",
         "latitud": 19.439186,
         "longitud": -99.130988,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Recinto dedicado a la preservación e intercambio de monedas y artículos preciados.",
+        "dialogos":[
+            "¿Tienes algo de cambio?",
+            "Este lugar es interesante. Antonio Lopez de Santa Anna lo mantuvo en pie en su momento. Fue la Casa de Moneda y se acuñaron tantas monedas raras aquí.",
+            "Se hacía con maquinaria antigua, movida a vapor. ¡Ahora mismo puedes entrar a ver si hay alguna exhibición!",
+            "Espero que estas monedas sirvan aún... mi camión está cerca..."
+        ]
     },
     {
         "nombre": "Museo Nacional de las Culturas del Mundo",
         "latitud": 19.433137,
         "longitud": -99.130399,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "Aquí hubo una pelea de intereses desde el prehispánico... Si, ¡ya sé!",
+            "Guadalupe Victoria, el primer presidente, creó este lugar bajo el nombre de \"Museo Nacional\". Pero se pone mejor.",
+            "El emperador Maximiliano De Habsburgo dice \"Quiero que todo lo relacionado a la época prehispánica se resguarde aquí.\"",
+            "Y ahora se encuentran incluso las casas denigradas de Moctezuma II. Irónicamente, él venía aquí cuando algo le preocupaba.",
+            "Este parece que fue el rincón de llorar..."
+        ]
     },
     {
         "nombre": "Colegio de San Idelfonso",
@@ -48,43 +68,86 @@
         "nombre": "Museo Franz Mayer",
         "latitud": 19.437016,
         "longitud": -99.143120,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "Menudos recintos tan antiguos hay aquí... Este me impresiona de sobre manera.",
+            "El edificio principal data desde 1582, fundado por Pedro Lopez con el propósito de un hospital, en específico, Hospital de la mujer.",
+            "Hasta 1986 fue un museo. CASI 400 AÑOS. Y... se vé bastante bien al parecer.",
+            "Aquí ahora hay arte. En su momento hubo una exposición especial del programa chileno 31 Minutos"
+        ]
     },
     {
         "nombre": "Museo del Templo Mayor",
         "latitud": 19.434509,
         "longitud": -99.131885,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "Este sitio es simplemente impresionante. Me siento como un verdadero mexica al entrar aquí.",
+            "El museo como tal data desde 1987, ese gran edificio fue obra de Pedro Ramírez Vázquez.",
+            "Sin embargo, la atracción como tal es el sitio en general. ¡Probablemente fue uno de los centros ceremoniales más importantes del pueblo mexica!",
+            "Todo lo aquí expuesto son piezas encontradas en 7 cuadras a la redonda del lugar. ¿Me pregunto si habrá aún más?"
+        ]
     },
     {
         "nombre": "Museo de la Medicina",
         "latitud": 19.437621,
         "longitud": -99.133064,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "¿Eres más de la UNAM o del IPN? Las dos instituciones universitarias más grandes del país.",
+            "Bueno, este recinto fue creado por un grupo de universitarios de la UNAM. Bajo el compromiso de difundir la historia de la medicina mexicana, la cual es mucha.",
+            "Como dato curioso, la pastilla anticonceptiva proviene de la cabeza de un mexicano. Espero que mencionen esto dentro.",
+            "¡Entremos! Puede que si me resfrío aprenda cómo curarme."
+        ]
     },
     {
         "nombre": "Museo de la Inquisición",
         "latitud": 19.435214,
         "longitud": -99.135569,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "Creo que no deberíamos estar aquí... Oh espera, es un museo.",
+            "¡Aquí se encuentra la historia de la inquisición! (Que por alguna razón quieres conocer...)",
+            "Gran parte de los aparatos de tortura aquí exhibidos son de colecciones privadas o reunidos de distintos mercados en países europeos. Donde perduró más la inquisición (o más bien, inició antes)."
+        ]
     },
     {
         "nombre": "Museo de la SHCP",
         "latitud": 19.433585,
         "longitud": -99.131887,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "Siento aquí mucho terror... Ah claro, este sitio lo conozco.",
+            "Este recinto pertenece a la Secretaría de Haciendo y Crédito Público. Organismo encargado de las finanzas del país.",
+            "Sin embargo, aquí hay muchas exhibiciones cambiando en muchos momentos. Incluso de las que son del tipo \"Pago en Especie\".",
+            "Vámonos por favor, no estoy seguro si como asistente virtual soy contribuyente."
+        ]
     },
     {
         "nombre": "Museo de la Ciudad de México",
         "latitud": 19.429236,
         "longitud": -99.133075,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "Aquí hay historia desde el siglo XVI. El estilo barroco básicamente me lo grita en la cara.",
+            "Tuvo muchos usos este lugar, pero, hasta 1960 se estableció como museo y ahora se realizan varias actividades aquí.",
+            "Aunque... siento algo... Es reciente, si... 2002",
+            "Este lugar fue restaurado. Incluso tuvo la reapertura de una biblioteca y un estudio.",
+            "Ay... amo el arte y la pasión por los museos de la gente dedicada a restaurar recintos."
+        ]
     },
     {
         "nombre": "Palacio de Bellas Artes",
         "latitud": 19.434263,
         "longitud": -99.141893,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "dialogos":[
+            "¡UNO DE LOS EDIFICIOS INSIGNIA DE MÉXICO! Creo que hasta Luis Miguel estuvo aquí.",
+            "Aquí hay un estilo art nouveau muy marcado. Basado en los diseños del arquitecto italiano Adamo Boari quien tuvo a su cargo la construcción en los terrenos en 1904.",
+            "Aunque hay algo triste. Si bien se querían seguir los planes de nuestro amigo italiano, el cimiento se empezó a hundir por el peso de la estructura y se tuvo que parar la construcción.",
+            "Eso fue hace años, de hecho, en 1934 el lugar fue abierto al público. Aunque...",
+            "Aún hay rumores de que se puede hundir. Ten cuidado explorador."
+        ]
     },
     {
         "nombre": "Punto Prueba Casa",
