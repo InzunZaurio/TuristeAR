@@ -1,5 +1,6 @@
 package com.example.turistear
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -14,18 +15,40 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val startButton: Button = findViewById(R.id.startButton)
+        // Configurar el fondo con Glide
         val backgroundGif = findViewById<ImageView>(R.id.backgroundGif)
         Glide.with(this)
             .load(R.drawable.ar)
             .transform(CenterCrop(), BlurTransformation(5, 3)) // Nivel de desenfoque
             .into(backgroundGif)
 
-        startButton.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            finish()
+        // Botones para seleccionar idioma
+        val btnEnglish = findViewById<Button>(R.id.btnEnglish)
+        val btnSpanish = findViewById<Button>(R.id.btnSpanish)
+
+        // Configurar acciones para los botones
+        btnEnglish.setOnClickListener {
+            saveLanguagePreference("en")
+            navigateToMainActivity()
         }
+
+        btnSpanish.setOnClickListener {
+            saveLanguagePreference("es")
+            navigateToMainActivity()
+        }
+    }
+
+    private fun saveLanguagePreference(language: String) {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("language", language)
+        editor.apply()
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out) // Transición suave
+        finish()
     }
 }

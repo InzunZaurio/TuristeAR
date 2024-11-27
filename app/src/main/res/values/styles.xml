@@ -3,6 +3,7 @@
 
     <!-- Estilo para los botones -->
     <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:backgroundTint">@color/purple_500</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">12dp</item>
@@ -20,7 +21,7 @@
 
     <!-- Estilo para el BottomSheetDialog -->
     <style name="CustomBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+        <item name="bottomSheetStyle">@style/TransparentBottomSheet</item>
     </style>
 
     <style name="CustomBottomSheet" parent="Widget.Design.BottomSheet.Modal">
@@ -33,8 +34,16 @@
     <!-- Estilo para los textos -->
     <style name="CustomTextStyle">
         <item name="android:fontFamily">@font/montse_regular</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="CustomCoordinatorLayout" parent="Widget.Support.CoordinatorLayout">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TransparentBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

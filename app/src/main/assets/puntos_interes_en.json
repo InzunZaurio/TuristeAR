@@ -1,0 +1,212 @@
+[
+    {
+        "nombre": "Art Museum",
+        "latitud": 19.4326,
+        "longitud": -99.1332,
+        "horarios": "Tuesday to Sunday - 10 a.m. to 6 p.m.",
+        "accesibilidad": "General admission $85. Free for children under 13, students, people with disabilities, and senior citizens.",
+        "descripcion": "With a very worthy collection that validates Mexico's place in the history of art, the works are concentrated from the mid-16th century to the mid-20th century.", 
+        "dialogos": [ 
+            "This place fills me with inspiration, you know?",
+            "This building was initially going to be the Palace of Communications. For some reason, it has been the MUNAL since 1982.",
+            "Also, the artistic finishes of this museum were completed in Florence. It reminds me of someone...",
+            "Yes, Porfirio Díaz. He used this building to receive foreign dignitaries and for his public declarations.",
+            "I love history!"
+        ]
+    },
+    {
+        "nombre": "Monumento a la Revolución",
+        "latitud": 19.4375,
+        "longitud": -99.1535,
+        "descripcion": "Monumento histórico de la Revolución Mexicana"
+    },
+    {
+        "nombre": "ESCOM",
+        "latitud": 19.504829,
+        "longitud": -99.146806,
+        "horarios": "Monday to Saturday - 7:00 a.m. to 10:00 p.m.",
+        "accesibilidad": "A valid IPN ID is required for full access or some other form of identification.",
+        "descripcion": "A school belonging to the IPN. Dedicated to the creation of engineers in technology-related fields.",
+        "dialogos": [
+            "I LOVE THIS PLACE!",
+            "You’ve arrived at ESCOM. Did you know there used to be only two buildings here? Well, now they have four! They work fast.",
+            "These new buildings house the new AI and ICD programs. There are also ISC people around.",
+            "This place has relatively little history, as it’s the youngest higher education school in the IPN. It’s up to its students to build a good reputation for it.",
+            "It smells a bit weird, doesn’t it? Let’s go."
+        ]
+    },
+    { 
+        "nombre": "National Numismatic Museum",
+        "latitud": 19.439186,
+        "longitud": -99.130988,
+        "horarios": "Tuesday to Sunday - 10 a.m. to 3 p.m.",
+        "accesibilidad": "Free entry. Guided tours at 11 a.m. and 1 p.m.",
+        "descripcion": "Venue dedicated to the preservation and exchange of coins and precious items.",
+        "dialogos": [
+            "Do you have any spare change?",
+            "This place is interesting. Antonio López de Santa Anna kept it running in his time. It was the Mint House, and so many rare coins were made here.",
+            "It was done with old machinery powered by steam. You can go in right now to see if there’s an exhibition!",
+            "I hope these coins are still valid... my bus is nearby..."
+        ]
+    },
+    { 
+        "nombre": "National Museum of World Cultures",
+        "latitud": 19.433137,
+        "longitud": -99.130399,
+        "horarios": "Tuesday to Sunday - 10 a.m. to 6 p.m.",
+        "accesibilidad": "Free entry. No smoking, no pets allowed, and no flash photography.",
+        "descripcion": "A museum that gathers certain pre-Hispanic presentations. It was a place of solace for Moctezuma II.",
+        "dialogos": [
+            "There was a clash of interests here since pre-Hispanic times... Yes, I know!",
+            "Guadalupe Victoria, the first president, created this place under the name 'National Museum.' But it gets better.",
+            "Emperor Maximilian of Habsburg said, 'I want everything related to the pre-Hispanic era to be preserved here.'",
+            "And now even the disreputable houses of Moctezuma II are found here. Ironically, he used to come here whenever something worried him.",
+            "This seems like it was the crying corner..."
+        ]
+    },
+    { 
+        "nombre": "College of San Ildefonso",
+        "latitud": 19.436252,
+        "longitud": -99.130855,
+        "horarios": "Tuesday to Sunday - 11 a.m. to 5:30 p.m.",
+        "accesibilidad": "General admission: $50. Students, teachers, and INAPAM ID holders: $25. Sundays are free entry.",
+        "descripcion": "One of the most important educational institutions of New Spain. Until it ceased to be.",
+        "dialogos": [
+            "Uh... The history of this place seems a bit complicated to explain.",
+            "It was first founded by the Jesuits (an old religious order in New Spain) in 1588. But then something happened...",
+            "The Jesuits were expelled from the country, and this place became the Royal and Most Ancient College of San Ildefonso.",
+            "But Benito Juárez had other plans, and in 1867 he established the National Preparatory School in this building, making it ENP 1.",
+            "It ceased to be a school in 1978, and in 1992 it was restored. AND ON TOP OF THAT, there are so many murals here. It’s believed that Mexican muralism was born here.",
+            "Yes, I told you it was complicated."
+        ]
+    },
+    { 
+        "nombre": "Franz Mayer Museum",
+        "latitud": 19.437016,
+        "longitud": -99.14312,
+        "horarios": "Tuesday to Sunday - 10 a.m. to 5 p.m.",
+        "accesibilidad": "Tuesdays offer free entry to the permanent exhibition. Temporary exhibitions usually cost $100.",
+        "descripcion": "From hospital to museum. This place carries that history.",
+        "dialogos": [
+            "What ancient buildings we have here... This one impresses me greatly.",
+            "The main building dates back to 1582, founded by Pedro López with the purpose of being a hospital, specifically, a women's hospital.",
+            "It wasn’t until 1986 that it became a museum. ALMOST 400 YEARS. And... it looks pretty good, apparently.",
+            "Now there’s art here. At one point, there was a special exhibition for the Chilean program 31 Minutos."
+        ]
+    },
+    { 
+        "nombre": "Templo Mayor Museum",
+        "latitud": 19.434509,
+        "longitud": -99.131885,
+        "horarios": "Tuesday to Sunday - 9 a.m. to 5 p.m.",
+        "accesibilidad": "General admission: $95. Free entry on Sundays for national visitors with ID.",
+        "descripcion": "Museum dedicated to one of the largest ceremonial centers in Mexico.",
+        "dialogos": [
+            "This place is simply amazing. I feel like a true Mexica upon entering here.",
+            "The museum itself dates back to 1987; that great building was designed by Pedro Ramírez Vázquez.",
+            "However, the main attraction is the site as a whole. It was probably one of the most important ceremonial centers of the Mexica people!",
+            "Everything displayed here consists of items found within a seven-block radius of the site.",
+            "Hmm...",
+            "I wonder if there’s even more to be discovered."
+        ]
+    },
+    { 
+        "nombre": "Museum of Medicine",
+        "latitud": 19.437621,
+        "longitud": -99.133064,
+        "descripcion": "A small exhibition on various aspects of Mexican medicine.",
+        "horarios": "Monday to Sunday - 9 a.m. to 6 p.m.",
+        "accesibilidad": "Free entry for all visitors with ID.",
+        "dialogos": [
+            "Are you more of a UNAM or IPN person? The two largest university institutions in the country.",
+            "Well, this place was created by a group of UNAM students, committed to spreading the history of Mexican medicine, which is extensive.",
+            "Fun fact: the contraceptive pill originated from the mind of a Mexican. I hope they mention this inside.",
+            "Let’s go in! If I catch a cold, I might learn how to cure myself."
+        ]
+    },
+    { 
+        "nombre": "Museum of the Inquisition",
+        "latitud": 19.435214,
+        "longitud": -99.135569,
+        "descripcion": "This museum displays various devices used during the Inquisition in Mexico and other parts of the world.",
+        "horarios": "Monday to Sunday - 10 a.m. to 6 p.m.",
+        "accesibilidad": "General public: $90. Students, teachers, and INAPAM ID holders: $55.",
+        "dialogos": [
+            "I don’t think we should be here... Oh wait, it’s a museum.",
+            "Here lies the history of the Inquisition! (For some reason, you want to know about it...)",
+            "Many of the torture devices displayed here come from private collections or were gathered from various markets in European countries, where the Inquisition lasted longer (or rather, started earlier)."
+        ]
+    },
+    { 
+        "nombre": "SHCP Museum",
+        "latitud": 19.433585,
+        "longitud": -99.131887,
+        "horarios": "Monday to Friday - 8 a.m. to 8 p.m.",
+        "accesibilidad": "Free entry for all.",
+        "descripcion": "Although this place is managed by the Treasury Department, it is a venue for various art exhibitions.",
+        "dialogos": [
+            "I feel a lot of dread here... Oh right, I know this place.",
+            "This venue belongs to the Ministry of Finance and Public Credit, the agency in charge of the country's finances.",
+            "However, there are many exhibitions here that change frequently, including those categorized as 'Payment in Kind.'",
+            "Let’s leave, please. I’m not sure if I, as a virtual assistant, am a taxpayer."
+        ]
+    },
+    { 
+        "nombre": "Museum of Mexico City",
+        "latitud": 19.429236,
+        "longitud": -99.133075,
+        "horarios": "Tuesday to Sunday - 10 a.m. to 5:30 p.m.",
+        "accesibilidad": "General admission: $41. Students, teachers, and INAPAM ID holders: $21. Sundays are free entry.",
+        "descripcion": "A multi-purpose venue throughout its history. It was recently restored.",
+        "dialogos": [ 
+            "There’s history here dating back to the 16th century. The Baroque style basically screams it at me.",
+            "This place had many uses, but in 1960 it was established as a museum, and now various activities are held here.",
+            "Although... I feel something... It’s recent, yes... 2002.",
+            "This place was restored. It even saw the reopening of a library and a studio.",
+            "Oh... I love art and the passion of the people dedicated to restoring historical venues."
+        ]
+    },
+    {
+        "nombre": "Palacio de Bellas Artes",
+        "latitud": 19.434263,
+        "longitud": -99.141893,
+        "horarios": "Tuesday to Sunday - 10 a.m. to 6 p.m.",
+        "accesibilidad": "General admission: $90. Free entry for students, teachers, and INAPAM ID holders. Sundays are free entry.",
+        "descripcion": "Flagship building of the Bellas Artes neighborhood. Home to an orchestra hall and an art museum.",
+        "dialogos": [
+            "ONE OF MEXICO'S ICONIC BUILDINGS! I think even Luis Miguel performed here.",
+            "There’s a very pronounced Art Nouveau style here, based on designs by Italian architect Adamo Boari, who oversaw the construction in 1904.",
+            "But there’s something sad. Although they wanted to follow the plans of our Italian friend, the foundation began sinking under the weight of the structure, and construction had to be halted.",
+            "That was years ago. In fact, the site was opened to the public in 1934. However...",
+            "There are still rumors that it could sink further. Be careful, explorer."
+        ]
+    },
+    { 
+        "nombre": "Mexibus Station - Central de Abastos",
+        "latitud": 19.616294,
+        "longitud": -99.007953,
+        "horarios": "Monday to Sunday - 4:30 a.m. to 11:00 p.m.",
+        "accesibilidad": "General fare: $9.",
+        "descripcion": "If this line collapses, line 1 is done for.",
+        "dialogos": [
+            "I hate this place.",
+            "Not for nothing, the transfer was a very useful addition (despite taking almost 6 years). However...",
+            "Have you seen the logistics of this place? They send four units of the same type in a row, which is why the demand is never met.",
+            "But sometimes there are dogs around here. They keep me company while I wait HALF AN HOUR."
+        ]
+    },
+    { 
+        "nombre": "Nexus Point",
+        "latitud": 19.627899,
+        "longitud": -99.016722,
+        "horarios": "I set my own hours.",
+        "accesibilidad": "[REDACTED]",
+        "descripcion": "Even time has an origin. Chronos had to emerge from somewhere...",
+        "dialogos": [
+            "This is... where it all began...",
+            "I’m sorry, I can’t talk about this place. It’s complicated.",
+            "I suggest we move somewhere else.",
+            "Please..."
+        ]
+    }
+]

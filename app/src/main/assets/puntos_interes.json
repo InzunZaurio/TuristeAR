@@ -3,6 +3,8 @@
         "nombre": "Museo de Arte",
         "latitud": 19.4326,
         "longitud": -99.1332,
+        "horarios": "Martes a Domingo - 10 a 18 hrs.",
+        "accesibilidad": "Admisión general $85. Gratuito a menores de 13 años, estudiantes, personas con discapacidad y adultos mayores.",
         "descripcion": "Con una colección muy digna que avala el lugar de México en la historia del arte, las obras se concentran desde mediados del siglo XVI hasta mediados del siglo XX.",
         "dialogos":[
             "Este lugar me llena de inspiración, ¿sabes?",
@@ -22,8 +24,8 @@
         "nombre": "ESCOM",
         "latitud": 19.504829,
         "longitud": -99.146806,
-        "horarios": "7:00 - 20:00",
-        "accesibilidad": "Total",
+        "horarios": "Lunes a Sábado - 7:00 a 22:00 hrs",
+        "accesibilidad": "Se necesita credencial vigente del IPN para el acceso total o alguna otra identificación.",
         "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
         "dialogos":[
             "¡ADORO ESTE LUGAR!",
@@ -37,6 +39,8 @@
         "nombre": "Museo Numismático Nacional",
         "latitud": 19.439186,
         "longitud": -99.130988,
+        "horarios": "Martes a Domingo - 10 a 15 hrs.",
+        "accesibilidad": "Entrada Libre. Recorridos guiados a 11 y 13 hrs.",
         "descripcion": "Recinto dedicado a la preservación e intercambio de monedas y artículos preciados.",
         "dialogos":[
             "¿Tienes algo de cambio?",
@@ -49,7 +53,9 @@
         "nombre": "Museo Nacional de las Culturas del Mundo",
         "latitud": 19.433137,
         "longitud": -99.130399,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "horarios": "Martes a Domingo - 10 a 18 hrs.",
+        "accesibilidad": "Entrada Libre. No fumar, no ingresar con mascotas y no usar flash.",
+        "descripcion": "Un museo que junta ciertas presentaciones prehispánicas. Lugar de desasociego de Moctezuma II.",
         "dialogos":[
             "Aquí hubo una pelea de intereses desde el prehispánico... Si, ¡ya sé!",
             "Guadalupe Victoria, el primer presidente, creó este lugar bajo el nombre de \"Museo Nacional\". Pero se pone mejor.",
@@ -62,13 +68,25 @@
         "nombre": "Colegio de San Idelfonso",
         "latitud": 19.436252,
         "longitud": -99.130855,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología."
+        "horarios": "Martes a Domingo - 11 a 17:30 hrs.",
+        "accesibilidad": "Entrada general: $50. Estudiantes, maestros e identificados del INAPAM: $25. Domingos es entrada libre.",
+        "descripcion": "Una de las instituciones educativas más importantes de la Nueva España. Hasta que dejó de serlo.",
+        "dialogos":[
+            "Uy... La historia de este sitio la veo un poco complicada de explicar.",
+            "Primero fue fundada por los jesuitas (un antiguo credo religioso de la Nueva España) en 1588. Pero pasó algo...",
+            "Los jesuitas fueron expulsados del país y este lugar pasó a ser el Real y Más Antiguo Colegio de San Idelfonso.",
+            "Pero Benito Juarez tuvo otros planes y en 1867 fundó la Escuela Nacional Preparatoria en este recinto, siendo entonces la ENP 1.",
+            "Dejó de ser una escuela en 1978 y en 1992 se restauró. Y APARTE DE ESO, también hay aquí muchísimos murales. Se cree que de aquí nació el muralismo mexicano.",
+            "Sí, te dije que era complicada."
+        ]
     },
     {
         "nombre": "Museo Franz Mayer",
         "latitud": 19.437016,
         "longitud": -99.143120,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "horarios": "Martes a Domingo - 10 a 17 hrs.",
+        "accesibilidad": "Martes hay entrada gratuita a la exposición permanente. Las temporales tienen un costo usual de $100.",
+        "descripcion": "De hospital a museo. Este lugar cuenta con esa historia.",
         "dialogos":[
             "Menudos recintos tan antiguos hay aquí... Este me impresiona de sobre manera.",
             "El edificio principal data desde 1582, fundado por Pedro Lopez con el propósito de un hospital, en específico, Hospital de la mujer.",
@@ -80,19 +98,25 @@
         "nombre": "Museo del Templo Mayor",
         "latitud": 19.434509,
         "longitud": -99.131885,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "horarios": "Martes a Domingo - 9 a 17 hrs.",
+        "accesibilidad": "Admisión general: $95. Domingo entrada libre a visitantes nacionales con identificación.",
+        "descripcion": "Museo dedicado a uno de los centros ceremoniales más grandes de México.",
         "dialogos":[
             "Este sitio es simplemente impresionante. Me siento como un verdadero mexica al entrar aquí.",
             "El museo como tal data desde 1987, ese gran edificio fue obra de Pedro Ramírez Vázquez.",
             "Sin embargo, la atracción como tal es el sitio en general. ¡Probablemente fue uno de los centros ceremoniales más importantes del pueblo mexica!",
-            "Todo lo aquí expuesto son piezas encontradas en 7 cuadras a la redonda del lugar. ¿Me pregunto si habrá aún más?"
+            "Todo lo aquí expuesto son piezas encontradas en 7 cuadras a la redonda del lugar.",
+            "Hmm...",
+            "¿Me pregunto si habrá aún más?"
         ]
     },
     {
         "nombre": "Museo de la Medicina",
         "latitud": 19.437621,
         "longitud": -99.133064,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "descripcion": "Pequeña exposición sobre la distinta medicina mexicana.",
+        "horarios": "Lunes a Domingo - 9 a 18 hrs.",
+        "accesibilidad": "Entrada gratuita a todo el público con identificación.",
         "dialogos":[
             "¿Eres más de la UNAM o del IPN? Las dos instituciones universitarias más grandes del país.",
             "Bueno, este recinto fue creado por un grupo de universitarios de la UNAM. Bajo el compromiso de difundir la historia de la medicina mexicana, la cual es mucha.",
@@ -104,7 +128,9 @@
         "nombre": "Museo de la Inquisición",
         "latitud": 19.435214,
         "longitud": -99.135569,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "descripcion": "Aquí son mostrados los distintos aparatos usados durante la inquisición en México y otros lados del mundo.",
+        "horarios": "Lunes a Domingo - 10 a 18 hrs.",
+        "accesibilidad": "Público en general: $90. Estudiantes, Maestros e identificados del INAPAM: $55",
         "dialogos":[
             "Creo que no deberíamos estar aquí... Oh espera, es un museo.",
             "¡Aquí se encuentra la historia de la inquisición! (Que por alguna razón quieres conocer...)",
@@ -115,7 +141,9 @@
         "nombre": "Museo de la SHCP",
         "latitud": 19.433585,
         "longitud": -99.131887,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "horarios": "Lunes a Viernes - 8 a 20 hrs.",
+        "accesibilidad": "Entrada libre en general.",
+        "descripcion": "Si bien este lugar lo maneja Hacienda, es un lugar donde se exponen distintas obras.",
         "dialogos":[
             "Siento aquí mucho terror... Ah claro, este sitio lo conozco.",
             "Este recinto pertenece a la Secretaría de Haciendo y Crédito Público. Organismo encargado de las finanzas del país.",
@@ -127,7 +155,9 @@
         "nombre": "Museo de la Ciudad de México",
         "latitud": 19.429236,
         "longitud": -99.133075,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "horarios": "Martes a Domingo - 10 a 17:30 hrs.",
+        "accesibilidad": "Entrada general: $41. Estudiantes, maestros e identificados del INAPAM: $21. Domingos es entrada libre.",
+        "descripcion": "Recinto multiusos durante toda su historia. Reciéntemente fué rehabilitado.",
         "dialogos":[
             "Aquí hay historia desde el siglo XVI. El estilo barroco básicamente me lo grita en la cara.",
             "Tuvo muchos usos este lugar, pero, hasta 1960 se estableció como museo y ahora se realizan varias actividades aquí.",
@@ -140,7 +170,9 @@
         "nombre": "Palacio de Bellas Artes",
         "latitud": 19.434263,
         "longitud": -99.141893,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "horarios": "Martes a Domingo - 10 a 18 hrs.",
+        "accesibilidad": "Entrada general: $90. Estudiantes, maestros e identificados del INAPAM: Entrada libre. Domingos es entrada libre.",
+        "descripcion": "Edificio insignia de la colonia Bellas Artes. Sala de Orquesta y museo de arte.",
         "dialogos":[
             "¡UNO DE LOS EDIFICIOS INSIGNIA DE MÉXICO! Creo que hasta Luis Miguel estuvo aquí.",
             "Aquí hay un estilo art nouveau muy marcado. Basado en los diseños del arquitecto italiano Adamo Boari quien tuvo a su cargo la construcción en los terrenos en 1904.",
@@ -150,14 +182,32 @@
         ]
     },
     {
-        "nombre": "Punto Prueba Casa",
+        "nombre": "Punto Nexo",
+        "link informacion": "https://sic.cultura.gob.mx/lista.php?table=museo&estado_id=9&municipio_id=-1",
         "latitud": 19.627899,
         "longitud": -99.016722,
-        "descripcion": "Escuela perteneciente al IPN. Dedicada a la creación de ingenieros en carreras afines a la tecnología.",
+        "horarios": "Yo creo mis horarios.",
+        "accesibilidad": "[REDACTED]",
+        "descripcion": "Incluso el tiempo tiene un orígen. Cronos tuvo que salir de algún lugar...",
         "dialogos":[
             "Aquí es... donde todo inició....",
             "Lo siento, no puedo hablar de este lugar. Es complicado.",
-            "Recomiendo que nos movamos a otro lado."
+            "Recomiendo que nos movamos a otro lado.",
+            "Por favor..."
+        ]
+    },
+    {
+        "nombre": "Estación Mexibus - Central de Abastos",
+        "latitud": 19.616294,
+        "longitud": -99.007953,
+        "horarios": "Lunes a Domingo - 4:30 a 23:00 hrs.",
+        "accesibilidad": "Entrada general: $9",
+        "descripcion": "Si colapsa esta línea, valió burguer la línea 1.",
+        "dialogos":[
+            "Odio este lugar",
+            "No por nada, el transbordo fue una adición muy útil (a pesar de tardarse casi 6 años). Sin embargo...",
+            "¿Has visto la logística de este lugar? Mandan 4 undidades seguidas del mismo tipo y por eso nunca se cumple con la afluencia.",
+            "Pero a veces hay perritos por aquí. Me hacen compañía mientras espero MEDIA HORA."
         ]
     }
 ]
