@@ -40,9 +40,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun saveLanguagePreference(language: String) {
         val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("language", language)
-        editor.apply()
+        sharedPreferences.edit().putString("language", language).apply()
     }
 
     private fun navigateToMainActivity() {
