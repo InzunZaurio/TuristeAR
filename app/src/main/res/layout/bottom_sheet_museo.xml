@@ -1,64 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CustomCoordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <!-- Título del Museo -->
-    <TextView
-        android:id="@+id/museoNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nombre del Museo"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <!-- Descripción del Museo -->
-    <TextView
-        android:id="@+id/museoDescripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Descripción del Museo"
-        android:paddingTop="8dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Descripción del Museo -->
-    <TextView
-        android:id="@+id/horarioMuseo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Horarios del Museo"
-        android:paddingTop="8dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Descripción del Museo -->
-    <TextView
-        android:id="@+id/accesibilidadMuseo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Datos de accesibilidad del Museo"
-        android:paddingTop="8dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <!-- Botón para la Ruta -->
-    <Button
-        android:id="@+id/btnRuta"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ruta más rápida" />
-
-    <!-- Botón para Realidad Aumentada -->
-    <Button
-        android:id="@+id/btnAR"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Activar RA"
-        android:layout_marginTop="8dp" />
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imagenCrono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="120dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Asistente Crono"
+        android:rotationY="180"
+        android:scaleType="fitCenter"
+        android:src="@drawable/assiscrop"
+        android:transitionName="imagenCronoTransicion" />
 
-</LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="264dp"
+        android:background="@drawable/bottom_sheet_background"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Título del Museo -->
+        <TextView
+            android:id="@+id/museoNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre del Museo"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/black" />
+
+        <!-- Descripción del Museo -->
+        <TextView
+            android:id="@+id/museoDescripcion"
+            style="@style/CustomTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="Descripción del Museo"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <!-- Descripción del Museo -->
+        <TextView
+            android:id="@+id/horarioMuseo"
+            style="@style/CustomTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="Horarios del Museo"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <!-- Descripción del Museo -->
+        <TextView
+            android:id="@+id/accesibilidadMuseo"
+            style="@style/CustomTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="Datos de accesibilidad del Museo"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <!-- Botón para la Ruta -->
+        <Button
+            android:id="@+id/btnRuta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Ruta más rápida" />
+
+        <!-- Botón para Realidad Aumentada -->
+        <Button
+            android:id="@+id/btnAR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Activar RA" />
+
+        <!-- Botón para Realidad Aumentada -->
+        <Button
+            android:id="@+id/btnNoAR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Información sin RA" />
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

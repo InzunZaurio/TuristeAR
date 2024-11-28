@@ -1,35 +1,66 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@color/gray">
 
+    <!-- Fondo animado -->
     <ImageView
         android:id="@+id/backgroundGif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
+    <!-- Logo de la aplicación -->
     <ImageView
         android:id="@+id/logoTuristear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:src="@drawable/logoturistear" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/logotrans" />
 
+    <!-- Botón de inicio -->
     <Button
+        style="@style/CustomButtonSplash"
+        android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/startButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="240dp"
-        android:textColor="@color/teal_700"
-        android:text="Es hora de comenzar"
         android:layout_below="@+id/logoTuristear"
+        android:layout_marginTop="240dp"
+        android:background="?attr/selectableItemBackground"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/teal_700"
+        android:text="Es hora de comenzar" />
+
+    <!-- Botones para selección de idioma -->
+    <Button
         style="@style/CustomButtonSplash"
+        android:id="@+id/btnSpanish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/teal_700"
+        android:text="Español" />
 
-        />
+    <Button
+        style="@style/CustomButtonSplash"
+        android:id="@+id/btnEnglish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/teal_700"
+        android:text="English"
+        android:layout_alignParentEnd="true" />
 
+    <!-- Texto inferior -->
     <TextView
         android:id="@+id/textoRandom"
         android:layout_width="wrap_content"

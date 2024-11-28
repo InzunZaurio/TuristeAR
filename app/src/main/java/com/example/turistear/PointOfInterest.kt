@@ -5,5 +5,7 @@ data class PointOfInterest(
     val latitud: Double,
     val longitud: Double,
     val descripcion: String,
-    val dialogos: List<String>
+    val dialogos: List<String>,
+    val horarios: String,
+    val accesibilidad: String
 )

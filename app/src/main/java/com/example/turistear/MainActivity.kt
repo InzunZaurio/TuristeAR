@@ -1,12 +1,20 @@
 package com.example.turistear
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.PixelFormat
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.turistear.R
 import com.google.android.gms.location.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -33,6 +42,8 @@ import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var assistantImage: ImageView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var mapView: MapView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -53,7 +64,13 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        pointsOfInterest = loadPointsOfInterest()
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val language = sharedPreferences.getString("language", "es") ?: "es"
+
+        // Cargar el archivo JSON correspondiente
+        val jsonFileName = if (language == "en") "puntos_interes_en.json" else "puntos_interes.json"
+        pointsOfInterest = loadPointsOfInterest(jsonFileName)
+
         nearbyButton = findViewById(R.id.btnNearbyPoints)
         nearbyButton.setOnClickListener {
             showNearbyPoints()
@@ -88,6 +105,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_about_us -> {
                     showAboutUs()
                 }
+                R.id.nav_language_es -> {
+                    changeLanguage("es")
+                }
+                R.id.nav_language_en -> {
+                    changeLanguage("en")
+                }
             }
             drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
             true
@@ -102,6 +125,9 @@ class MainActivity : AppCompatActivity() {
 
         // Solicitar permisos de ubicación
         requestLocationPermission()
+
+
+
     }
 
     // Función para solicitar permisos de ubicación
@@ -147,7 +173,7 @@ class MainActivity : AppCompatActivity() {
             // Crear el marcador del usuario si no existe
             userMarker = Marker(mapView)
             userMarker?.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            userMarker?.title = "Tú estás aquí"
+            userMarker?.title = "Tú estás aquí, viajero."
             mapView.overlays.add(userMarker)
 
             // Solo centramos el mapa la primera vez
@@ -159,12 +185,23 @@ class MainActivity : AppCompatActivity() {
         // Actualizar la posición del marcador sin centrar el mapa
         userMarker?.position = userLocation
 
+        // Verificar si está cerca del destino de la ruta actual
+        if (currentRoute != null) {
+            val destination = currentRoute?.points?.lastOrNull()
+            if (destination != null && userLocation.distanceToAsDouble(destination) <= 100.0) {
+                Toast.makeText(this, "Has llegado a tu destino, viajero.", Toast.LENGTH_SHORT).show()
+                removeRouteFromMap()
+            }
+        }
+
         // Redibujar el mapa para reflejar el movimiento del marcador
         mapView.invalidate()
     }
 
     // Método para agregar los marcadores de los puntos de interés al mapa
     private fun addPointsOfInterestMarkers() {
+        val handler = Handler(Looper.getMainLooper())
+
         for (point in pointsOfInterest) {
             val pointLocation = GeoPoint(point.latitud, point.longitud)
             val marker = Marker(mapView)
@@ -172,6 +209,30 @@ class MainActivity : AppCompatActivity() {
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             marker.title = point.nombre
             marker.snippet = point.descripcion // Añadir una breve descripción
+
+            // Animación del marcador (opcional)
+            val frames = listOf(
+                R.drawable.frame_0,
+                R.drawable.frame_1,
+                R.drawable.frame_2,
+                R.drawable.frame_3,
+                R.drawable.frame_4,
+            )
+            var currentFrame = 0
+
+            // Runnable para alternar las imágenes
+            val runnable = object : Runnable {
+                override fun run() {
+                    marker.icon = ContextCompat.getDrawable(this@MainActivity, frames[currentFrame])
+                    mapView.invalidate() // Refrescar el mapa
+                    currentFrame = (currentFrame + 1) % frames.size // Ciclar entre los frames
+                    handler.postDelayed(this, 100) // Cambiar frame cada 100ms
+                }
+            }
+
+            // Iniciar animación del marcador
+            handler.post(runnable)
+
             marker.setOnMarkerClickListener { _, _ ->
                 showMuseumDetails(point)
                 true
@@ -180,13 +241,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     // Método para cargar puntos de interés desde el archivo JSON
-    private fun loadPointsOfInterest(): List<PointOfInterest> {
-        val inputStream = assets.open("puntos_interes.json")
+    private fun loadPointsOfInterest(jsonFileName: String): List<PointOfInterest> {
+        val inputStream = assets.open(jsonFileName)
         val reader = InputStreamReader(inputStream)
         val pointType = object : TypeToken<List<PointOfInterest>>() {}.type
         return Gson().fromJson(reader, pointType)
     }
+
+
 
     // Método para verificar si el usuario está cerca de algún punto de interés
     private fun checkNearbyPoints(userLocation: GeoPoint, points: List<PointOfInterest>) {
@@ -208,15 +272,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun showMuseumDetails(museo: PointOfInterest) {
         // Crear el BottomSheetDialog
-        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialog)
         val view = layoutInflater.inflate(R.layout.bottom_sheet_museo, null)
         bottomSheetDialog.setContentView(view)
 
         // Configurar la información del museo en el Bottom Sheet
         val nombreTextView = view.findViewById<TextView>(R.id.museoNombre)
         val descripcionTextView = view.findViewById<TextView>(R.id.museoDescripcion)
+        val horarioTextView = view.findViewById<TextView>(R.id.horarioMuseo)
+        val accessTextView = view.findViewById<TextView>(R.id.accesibilidadMuseo)
         nombreTextView.text = museo.nombre
         descripcionTextView.text = museo.descripcion
+        horarioTextView.text = museo.horarios
+        accessTextView.text = museo.accesibilidad
 
         // Configurar el botón para la ruta
         val btnRuta = view.findViewById<Button>(R.id.btnRuta)
@@ -236,11 +304,22 @@ class MainActivity : AppCompatActivity() {
             bottomSheetDialog.dismiss()
         }
 
+        val btnNoAR = view.findViewById<Button>(R.id.btnNoAR)
+        btnNoAR.setOnClickListener {
+            showAssistantOverlay(museo)
+            bottomSheetDialog.dismiss()
+        }
+
         // Mostrar el Bottom Sheet
         bottomSheetDialog.show()
     }
 
     private fun showRouteToMuseum(museo: PointOfInterest) {
+        if (currentRoute != null) {
+            Toast.makeText(this, "Ya hay una ruta activa. Cancélala para empezar otra..", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -259,6 +338,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun showNearbyPoints() {
         if (ActivityCompat.checkSelfPermission(
@@ -282,7 +362,7 @@ class MainActivity : AppCompatActivity() {
                     val nearbyNames = nearbyPoints.joinToString(separator = ", ") { it.nombre }
                     showAlertDialog("Estás cerca de estos puntos: $nearbyNames")
                 } else {
-                    showAlertDialog("No estás cerca de ningún punto de interés.")
+                    showAlertDialog("No estás cerca de ningún punto de interés, viajero.")
                 }
             }
         }
@@ -295,6 +375,85 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
         builder.create().show()
     }
+
+    private var currentLanguage = "es" // Idioma por defecto
+
+    private fun changeLanguage(language: String) {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val currentLanguage = sharedPreferences.getString("language", "es") // Idioma actual
+        if (currentLanguage == language) {
+            val message = if (language == "es") "Ya estás en Español" else "You are already in English"
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Guardar el nuevo idioma en las preferencias
+        sharedPreferences.edit().putString("language", language).apply()
+
+        // Cargar el archivo JSON correspondiente
+        val jsonFileName = if (language == "es") "puntos_interes.json" else "puntos_interes_en.json"
+        pointsOfInterest = loadPointsOfInterest(jsonFileName)
+        updatePointsOfInterestMarkers()
+
+        val confirmationMessage = if (language == "es") "Idioma cambiado a Español" else "Language changed to English"
+        Toast.makeText(this, confirmationMessage, Toast.LENGTH_SHORT).show()
+    }
+
+
+
+
+    private fun updatePointsOfInterestMarkers() {
+        // Eliminar todos los marcadores previos de los puntos de interés
+        mapView.overlays.removeAll(mapView.overlays.filter {
+            it is Marker && it != userMarker
+        })
+
+        // Añadir los nuevos marcadores
+        val handler = Handler(Looper.getMainLooper())
+        for (point in pointsOfInterest) {
+            val pointLocation = GeoPoint(point.latitud, point.longitud)
+            val marker = Marker(mapView).apply {
+                position = pointLocation
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                title = point.nombre
+                snippet = point.descripcion
+
+                // Animación personalizada para el marcador
+                val frames = listOf(
+                    R.drawable.frame_0,
+                    R.drawable.frame_1,
+                    R.drawable.frame_2,
+                    R.drawable.frame_3,
+                    R.drawable.frame_4,
+                )
+                var currentFrame = 0
+
+                val runnable = object : Runnable {
+                    override fun run() {
+                        icon = ContextCompat.getDrawable(this@MainActivity, frames[currentFrame])
+                        mapView.invalidate()
+                        currentFrame = (currentFrame + 1) % frames.size
+                        handler.postDelayed(this, 100)
+                    }
+                }
+                handler.post(runnable)
+
+                // Manejar eventos de clic en el marcador
+                setOnMarkerClickListener { _, _ ->
+                    showMuseumDetails(point)
+                    true
+                }
+            }
+
+            // Agregar el marcador al mapa
+            mapView.overlays.add(marker)
+        }
+
+        // Refrescar el mapa
+        mapView.invalidate()
+    }
+
+
 
     private fun centerMapOnUserLocation() {
         if (userMarker != null) {
@@ -384,6 +543,44 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
         builder.create().show()
     }
+
+    private fun showAssistantOverlay(museo: PointOfInterest) {
+        // Inflar la vista del overlay
+        val overlayView = layoutInflater.inflate(R.layout.assistant_overlay, null)
+        val overlayDialogText = overlayView.findViewById<TextView>(R.id.overlayDialogText)
+
+        // Configurar el WindowManager
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val layoutParams = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
+
+        layoutParams.gravity = Gravity.BOTTOM
+
+        // Configurar diálogos del museo
+        val dialogs = museo.dialogos
+        var currentIndex = 0
+        overlayDialogText.text = dialogs[currentIndex]
+
+        // Añadir la vista al WindowManager
+        windowManager.addView(overlayView, layoutParams)
+
+        // Manejar toques en el overlay para avanzar los diálogos
+        overlayView.setOnClickListener {
+            currentIndex++
+            if (currentIndex < dialogs.size) {
+                overlayDialogText.text = dialogs[currentIndex]
+            } else {
+                // Eliminar el overlay cuando se acaben los diálogos
+                windowManager.removeView(overlayView)
+            }
+        }
+    }
+
 
     // Respuesta a la solicitud de permisos
     override fun onRequestPermissionsResult(
