@@ -20,8 +20,4 @@
         android:id="@+id/nav_language_en"
         android:title="English"
         android:icon="@drawable/ic_language" />
-    <item
-        android:id="@+id/nav_language_GLOBAL"
-        android:title="Cambio de idioma"
-        android:icon="@drawable/ic_language" />
 </menu>

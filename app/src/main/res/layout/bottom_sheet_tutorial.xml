@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bottom_sheet_background">
+
+    <TextView
+        android:id="@+id/tutorial_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tutorial de la aplicación"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tutorial_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aquí irá la información del tutorial..."
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+</LinearLayout>

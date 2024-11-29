@@ -111,6 +111,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_language_en -> {
                     changeLanguage("en")
                 }
+                R.id.mostrar_tutorial ->{
+                    showTutorialBottomSheet()
+                }
             }
             drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
             true
@@ -165,6 +168,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     // Método para actualizar la ubicación del usuario en el mapa
     private fun updateLocationOnMap(location: Location) {
         val userLocation = GeoPoint(location.latitude, location.longitude)
@@ -180,6 +185,7 @@ class MainActivity : AppCompatActivity() {
             mapView.controller.setCenter(userLocation)
             mapView.controller.setZoom(15.0)
             addPointsOfInterestMarkers()
+            startUserMarkerAnimation()
         }
 
         // Actualizar la posición del marcador sin centrar el mapa
@@ -339,6 +345,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showTutorialBottomSheet() {
+        // Inflar la vista del BottomSheet
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_tutorial, null)
+
+        // Crear el BottomSheetDialog
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        // Mostrar el BottomSheet
+        bottomSheetDialog.show()
+    }
+
+
 
     private fun showNearbyPoints() {
         if (ActivityCompat.checkSelfPermission(
@@ -395,8 +414,58 @@ class MainActivity : AppCompatActivity() {
         pointsOfInterest = loadPointsOfInterest(jsonFileName)
         updatePointsOfInterestMarkers()
 
+        // Reiniciar la animación del marcador del usuario si existe
+        if (userMarker != null) {
+            stopUserMarkerAnimation() // Detenemos cualquier animación en curso
+            startUserMarkerAnimation() // Reiniciamos la animación
+        }
+
         val confirmationMessage = if (language == "es") "Idioma cambiado a Español" else "Language changed to English"
         Toast.makeText(this, confirmationMessage, Toast.LENGTH_SHORT).show()
+    }
+
+
+    // Variable para manejar el ciclo de animación del marcador del usuario
+    private val userMarkerFrames = listOf(
+        R.drawable.user_1,
+        R.drawable.user_2,
+        R.drawable.user_3,
+        R.drawable.user_4,
+        R.drawable.user_5,
+        R.drawable.user_6,
+        R.drawable.user_7,
+        R.drawable.user_8,
+        R.drawable.user_9,
+        R.drawable.user_10
+    )
+    private var userMarkerCurrentFrame = 0
+    private val userMarkerAnimationHandler = Handler(Looper.getMainLooper())
+
+    // Método para inicializar la animación del marcador del usuario
+    private fun startUserMarkerAnimation() {
+        userMarker?.let { marker ->
+            val runnable = object : Runnable {
+                override fun run() {
+                    // Cambiar la imagen del marcador
+                    marker.icon = ContextCompat.getDrawable(this@MainActivity, userMarkerFrames[userMarkerCurrentFrame])
+                    mapView.invalidate() // Refrescar el mapa
+
+                    // Pasar al siguiente frame
+                    userMarkerCurrentFrame = (userMarkerCurrentFrame + 1) % userMarkerFrames.size
+
+                    // Volver a ejecutar el Runnable después de 100ms
+                    userMarkerAnimationHandler.postDelayed(this, 100)
+                }
+            }
+
+            // Iniciar la animación
+            userMarkerAnimationHandler.post(runnable)
+        }
+    }
+
+    // Método para detener la animación del marcador del usuario
+    private fun stopUserMarkerAnimation() {
+        userMarkerAnimationHandler.removeCallbacksAndMessages(null)
     }
 
 
@@ -611,6 +680,7 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         mapView.onPause()
         fusedLocationClient.removeLocationUpdates(locationCallback)
+        stopUserMarkerAnimation()
     }
 
 }

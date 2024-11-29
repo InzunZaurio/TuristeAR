@@ -69,7 +69,7 @@
         android:layout_below="@+id/startButton"
         android:layout_marginTop="30dp"
         android:textColor="#FFFFFF"
-        android:text="Alpha Release - 2024"
+        android:text="Alpha Release V1.1 - 2024"
         style="@style/CustomTextStyle" />
 
 </RelativeLayout>
