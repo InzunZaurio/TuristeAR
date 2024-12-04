@@ -1,11 +1,13 @@
 package com.example.turistear
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PixelFormat
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -158,13 +160,18 @@ class MainActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
                     updateLocationOnMap(location)
+                    if (!isRequestingLocationUpdates){
+                        mapView.controller.setCenter(GeoPoint(location.latitude, location.longitude))
+                        mapView.controller.setZoom(15.0)
+                        isRequestingLocationUpdates = true
+                    }
                 }
             }
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, mainLooper)
-            isRequestingLocationUpdates = true
+
         }
     }
 
@@ -300,6 +307,11 @@ class MainActivity : AppCompatActivity() {
             bottomSheetDialog.dismiss()
         }
 
+        val btnRouteMaps = view.findViewById<Button>(R.id.btnRouteMaps)
+        btnRouteMaps.setOnClickListener {
+            openGoogleMaps(museo.latitud, museo.longitud)
+        }
+
         // Configurar el botón para activar la RA
         val btnAR = view.findViewById<Button>(R.id.btnAR)
         btnAR.setOnClickListener {
@@ -320,9 +332,20 @@ class MainActivity : AppCompatActivity() {
         bottomSheetDialog.show()
     }
 
+    private fun openGoogleMaps(lat: Double, lon: Double) {
+        try {
+            val uri = Uri.parse("geo:$lat,$lon?q=$lat,$lon")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.setPackage("com.google.android.apps.maps") // Asegurarnos de usar Google Maps
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Google Maps no está instalado viajero.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun showRouteToMuseum(museo: PointOfInterest) {
         if (currentRoute != null) {
-            Toast.makeText(this, "Ya hay una ruta activa. Cancélala para empezar otra..", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ya hay una ruta activa. Cancélala para empezar otra...", Toast.LENGTH_SHORT).show()
             return
         }
 

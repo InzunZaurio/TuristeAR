@@ -20,6 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Regresar al mapa"
+
+        android:textColor="@color/black"
         android:layout_gravity="center|bottom|right"
         android:layout_margin="16dp" />
 
@@ -27,6 +29,8 @@
         android:id="@+id/btnShowDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:textColor="@color/black"
         android:text="Dialogar de nuevo"
         android:layout_gravity="center|bottom|left"
         android:layout_margin="16dp" />
