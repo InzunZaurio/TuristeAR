@@ -31,6 +31,14 @@
         <item name="android:colorBackground">@color/gray</item>
     </style>
 
+    <style name="CustomBottomSheetFavorites" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_background</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:colorBackground">@color/gray</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <!-- Estilo para los textos -->
     <style name="CustomTextStyle">
         <item name="android:fontFamily">@font/montse_regular</item>

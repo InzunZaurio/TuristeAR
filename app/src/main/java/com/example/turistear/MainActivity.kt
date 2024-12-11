@@ -8,11 +8,9 @@ import android.content.pm.PackageManager
 import android.graphics.PixelFormat
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -24,8 +22,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.turistear.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -58,13 +58,28 @@ class MainActivity : AppCompatActivity() {
     private var userMarker: Marker? = null
     private lateinit var locationCallback: LocationCallback
     private var isRequestingLocationUpdates = false
+    private var isOverlayActive = false
+    private var currentBottomSheetView: View? = null
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private var favoritePoints: MutableList<PointOfInterest> = mutableListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        favoritePoints = loadFavoritesFromSharedPreferences()
         // Configuración de OSMDroid
         Configuration.getInstance().load(this, applicationContext.getSharedPreferences("osmdroid", MODE_PRIVATE))
 
         setContentView(R.layout.activity_main)
+
+        // Inicializar locationCallback para evitar errores
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    updateLocationOnMap(location)
+                }
+            }
+        }
 
         val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         val language = sharedPreferences.getString("language", "es") ?: "es"
@@ -130,6 +145,30 @@ class MainActivity : AppCompatActivity() {
 
         // Solicitar permisos de ubicación
         requestLocationPermission()
+
+        // Inicializar BottomNavigationView
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_home -> {
+                    Toast.makeText(this, "Estás en el mapa principal", Toast.LENGTH_SHORT).show()
+                    true
+                }
+
+                //Futura funcionalidad
+                //R.id.action_language -> {
+                //    showLanguageDialog() // Mostrar diálogo para cambiar idioma
+                //    true
+                //}
+
+                R.id.action_favorites -> {
+                    showFavoritesBottomSheet() // Mostrar POIs favoritos
+                    true
+                }
+                else -> false
+            }
+        }
 
 
 
@@ -283,10 +322,13 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Estás cerca de ${point.nombre}", Toast.LENGTH_SHORT).show()
     }
 
+
     private fun showMuseumDetails(museo: PointOfInterest) {
         // Crear el BottomSheetDialog
         val bottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialog)
         val view = layoutInflater.inflate(R.layout.bottom_sheet_museo, null)
+        currentBottomSheetView = view
+        updateUITexts(view)
         bottomSheetDialog.setContentView(view)
 
         // Configurar la información del museo en el Bottom Sheet
@@ -298,6 +340,10 @@ class MainActivity : AppCompatActivity() {
         descripcionTextView.text = museo.descripcion
         horarioTextView.text = museo.horarios
         accessTextView.text = museo.accesibilidad
+
+        // Configurar la estrella de favoritos
+        val btnFavorite = view.findViewById<ImageButton>(R.id.btnFavorite)
+        updateFavoriteIcon(btnFavorite, museo)
 
         // Configurar el botón para la ruta
         val btnRuta = view.findViewById<Button>(R.id.btnRuta)
@@ -328,9 +374,70 @@ class MainActivity : AppCompatActivity() {
             bottomSheetDialog.dismiss()
         }
 
+        btnFavorite.setOnClickListener {
+            if (favoritePoints.contains(museo)) {
+                favoritePoints.remove(museo)
+                saveFavoritesToSharedPreferences(favoritePoints)
+                Toast.makeText(this, "${museo.nombre} eliminado de favoritos", Toast.LENGTH_SHORT).show()
+            } else {
+                favoritePoints.add(museo)
+                saveFavoritesToSharedPreferences(favoritePoints)
+                Toast.makeText(this, "${museo.nombre} añadido a favoritos", Toast.LENGTH_SHORT).show()
+            }
+            updateFavoriteIcon(btnFavorite, museo)
+        }
+
+
+        bottomSheetDialog.setOnDismissListener {
+            currentBottomSheetView = null // Liberar referencia al cerrar el BottomSheet
+        }
+
         // Mostrar el Bottom Sheet
         bottomSheetDialog.show()
     }
+
+    private fun updateFavoriteIcon(button: ImageButton, museo: PointOfInterest) {
+        if (favoritePoints.contains(museo)) {
+            button.setImageResource(R.drawable.baseline_favorite)
+        } else {
+            button.setImageResource(R.drawable.baseline_favorite_border)
+        }
+    }
+
+    private fun showFavoritesBottomSheet() {
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_favorites, null)
+        val bottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialog)
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        val favoritesList = bottomSheetView.findViewById<RecyclerView>(R.id.recyclerViewFavorites)
+        favoritesList.layoutManager = LinearLayoutManager(this)
+        favoritesList.adapter = FavoritesAdapter(favoritePoints.toList().toMutableList()) { point ->
+            mapView.controller.animateTo(GeoPoint(point.latitud, point.longitud))
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.show()
+    }
+
+    fun saveFavoritesToSharedPreferences(favorites: List<PointOfInterest>) {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val jsonFavorites = gson.toJson(favorites)
+        editor.putString("favorites", jsonFavorites)
+        editor.apply()
+    }
+
+    fun loadFavoritesFromSharedPreferences(): MutableList<PointOfInterest> {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val jsonFavorites = sharedPreferences.getString("favorites", null)
+        val type = object : TypeToken<MutableList<PointOfInterest>>() {}.type
+        return if (jsonFavorites != null) gson.fromJson(jsonFavorites, type) else mutableListOf()
+    }
+
+
+
 
     private fun openGoogleMaps(lat: Double, lon: Double) {
         try {
@@ -419,7 +526,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var currentLanguage = "es" // Idioma por defecto
-
     private fun changeLanguage(language: String) {
         val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         val currentLanguage = sharedPreferences.getString("language", "es") // Idioma actual
@@ -432,10 +538,14 @@ class MainActivity : AppCompatActivity() {
         // Guardar el nuevo idioma en las preferencias
         sharedPreferences.edit().putString("language", language).apply()
 
+
         // Cargar el archivo JSON correspondiente
         val jsonFileName = if (language == "es") "puntos_interes.json" else "puntos_interes_en.json"
         pointsOfInterest = loadPointsOfInterest(jsonFileName)
         updatePointsOfInterestMarkers()
+
+        // Actualizar textos en el BottomSheet actual si está abierto
+        currentBottomSheetView?.let { updateUITexts(it) }
 
         // Reiniciar la animación del marcador del usuario si existe
         if (userMarker != null) {
@@ -446,6 +556,17 @@ class MainActivity : AppCompatActivity() {
         val confirmationMessage = if (language == "es") "Idioma cambiado a Español" else "Language changed to English"
         Toast.makeText(this, confirmationMessage, Toast.LENGTH_SHORT).show()
     }
+
+    private fun updateUITexts(view: View) {
+        // Actualizar textos del BottomSheet usando el View correspondiente
+        view.findViewById<Button>(R.id.btnRuta)?.text = getString(R.string.quick_route)
+        view.findViewById<Button>(R.id.btnRouteMaps)?.text = getString(R.string.route_in_maps)
+        view.findViewById<Button>(R.id.btnAR)?.text = getString(R.string.start_ra)
+        view.findViewById<Button>(R.id.btnNoAR)?.text = getString(R.string.non_ra_info)
+        view.findViewById<Button>(R.id.btnNext)?.text =getString(R.string.next)
+    }
+
+
 
 
     // Variable para manejar el ciclo de animación del marcador del usuario
@@ -637,6 +758,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAssistantOverlay(museo: PointOfInterest) {
+        if (isOverlayActive){
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Información activa")
+            builder.setMessage("Ya se está mostrando información. Por favor, finaliza la actual antes de continuar.")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            builder.show()
+            return
+        }
+
+
         // Inflar la vista del overlay
         val overlayView = layoutInflater.inflate(R.layout.assistant_overlay, null)
         val overlayDialogText = overlayView.findViewById<TextView>(R.id.overlayDialogText)
@@ -657,6 +788,7 @@ class MainActivity : AppCompatActivity() {
         val dialogs = museo.dialogos
         var currentIndex = 0
         overlayDialogText.text = dialogs[currentIndex]
+        isOverlayActive = true
 
         // Añadir la vista al WindowManager
         windowManager.addView(overlayView, layoutParams)
@@ -669,6 +801,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 // Eliminar el overlay cuando se acaben los diálogos
                 windowManager.removeView(overlayView)
+                isOverlayActive = false
             }
         }
     }
@@ -676,7 +809,9 @@ class MainActivity : AppCompatActivity() {
 
     // Respuesta a la solicitud de permisos
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
@@ -685,7 +820,10 @@ class MainActivity : AppCompatActivity() {
                 startLocationUpdates()
             } else {
                 // Permiso denegado; puedes manejar este caso si es necesario
-                Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Permiso de ubicación denegado. Algunas funciones estarán limitadas.", Toast.LENGTH_SHORT).show()
+                val defaultLocation = GeoPoint(19.432608, -99.133209) // CDMX como ejemplo
+                mapView.controller.setCenter(defaultLocation)
+                mapView.controller.setZoom(10.0)
             }
         }
     }
@@ -702,8 +840,9 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mapView.onPause()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-        stopUserMarkerAnimation()
+        if (this::locationCallback.isInitialized) {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+        }
     }
 
 }

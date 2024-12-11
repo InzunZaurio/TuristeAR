@@ -1,0 +1,11 @@
+<resources>
+    <string name="quick_route">Quickest Route</string>
+    <string name="route_in_maps">See in Google Maps</string>
+    <string name="start_ra">Start AR</string>
+    <string name="non_ra_info">Info without RA</string>
+    <string name="next">Next</string>
+    <string name="home">Home</string>
+    <string name="change_language">Languages</string>
+    <string name="favorites">Favorites</string>
+    <string name="favoritosItem">Favorites</string>
+</resources>
