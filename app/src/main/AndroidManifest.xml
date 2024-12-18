@@ -42,6 +42,12 @@
         </activity>
 
         <activity
+            android:name=".PrivacyPolicyActivity"
+            android:exported="true"
+            android:label="Privacidad">
+        </activity>
+
+        <activity
             android:name=".CameraActivity"
             android:parentActivityName=".MainActivity">
         </activity>

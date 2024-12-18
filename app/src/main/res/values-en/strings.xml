@@ -8,4 +8,6 @@
     <string name="change_language">Languages</string>
     <string name="favorites">Favorites</string>
     <string name="favoritosItem">Favorites</string>
+    <string name="los_datos_recopilados_por_turistear_son_datos_de_ubicaci_n_y_uso_de_la_c_mara_nunca_almacenados_de_ninguna_forma">Los datos recopilados por TuristeAR son datos de Ubicación y uso de la cámara (nunca almacenados de ninguna forma).</string>
+    <string name="coming_soon">Próximamente</string>
 </resources>

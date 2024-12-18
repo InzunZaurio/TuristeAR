@@ -131,9 +131,19 @@ class MainActivity : AppCompatActivity() {
                 R.id.mostrar_tutorial ->{
                     showTutorialBottomSheet()
                 }
+                R.id.nav_privacy_policy -> {
+                    showPrivacyPolicy()
+                    true
+                }
+                else -> false
             }
             drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
             true
+        }
+
+        val tvPrivacyPolicy = findViewById<TextView>(R.id.tvPrivacyPolicy)
+        tvPrivacyPolicy.setOnClickListener {
+            showPrivacyPolicy()
         }
 
         // Inicializar el MapView
@@ -156,11 +166,10 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                //Futura funcionalidad
-                //R.id.action_language -> {
-                //    showLanguageDialog() // Mostrar diálogo para cambiar idioma
-                //    true
-                //}
+                R.id.action_language -> {
+                    Toast.makeText(this, "Esta función será agregada próximamente.", Toast.LENGTH_SHORT).show()
+                    true
+                }
 
                 R.id.action_favorites -> {
                     showFavoritesBottomSheet() // Mostrar POIs favoritos
@@ -187,6 +196,12 @@ class MainActivity : AppCompatActivity() {
             startLocationUpdates()
         }
     }
+
+    private fun showPrivacyPolicy() {
+        val intent = Intent(this, PrivacyPolicyActivity::class.java)
+        startActivity(intent)
+    }
+
 
     // Método para iniciar las actualizaciones de ubicación
     private fun startLocationUpdates() {

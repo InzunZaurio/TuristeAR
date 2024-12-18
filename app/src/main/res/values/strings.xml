@@ -9,4 +9,8 @@
     <string name="change_language">Idiomas</string>
     <string name="favorites">Favoritos</string>
     <string name="favoritosItem">Favoritos</string>
+    <string name="los_datos_recopilados_por_turistear_son_datos_de_ubicaci_n_y_uso_de_la_c_mara_nunca_almacenados_de_ninguna_forma">Los datos recopilados por TuristeAR son datos de Ubicación y uso de la cámara (nunca almacenados de ninguna forma).
+    Dichos datos son usados para brindarte experiencias en realidad aumentada, los puntos de interés cercanos y el manejo de rutas. Jamás son almacenados de forma remota y solamente se usan en tiempo de ejecución de la app.
+    Puedes remover estos permisos en cualquier momento, sin embargo, tus funciones dentro de la app se verán limitadas drásticamente.</string>
+    <string name="coming_soon">Próximamente</string>
 </resources>

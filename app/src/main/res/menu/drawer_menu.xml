@@ -20,4 +20,13 @@
         android:id="@+id/nav_language_en"
         android:title="English"
         android:icon="@drawable/ic_language" />
+    <!-- Grupo para el Aviso de Privacidad en la parte inferior -->
+    <group android:checkableBehavior="none">
+        <item
+            android:visible="false"
+            android:id="@+id/nav_privacy_policy"
+            android:title="Aviso de Privacidad"
+            android:icon="@drawable/ic_privacy"
+            android:layout_gravity="bottom" />
+    </group>
 </menu>
