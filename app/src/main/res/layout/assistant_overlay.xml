@@ -12,7 +12,7 @@
         android:id="@+id/assistantOverlayImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/assistant"
+        android:src="@drawable/cronoshi"
         android:layout_alignParentStart="true"
         android:rotationY="180"
         android:contentDescription="Asistente Virtual" />

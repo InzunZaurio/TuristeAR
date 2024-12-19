@@ -7,5 +7,5 @@
         android:id="@+id/assistant_image"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/assistant" />
+        android:src="@drawable/cronospoint" />
 </RelativeLayout>
